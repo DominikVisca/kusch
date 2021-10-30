@@ -17,7 +17,7 @@ jobs:
           host: ${{ secrets.SSH_HOST_TEST }}
           key: ${{ secrets.SSH_KEY_TEST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: $${{ secrets.SSH_PORT }}
+          #port: $${{ secrets.SSH_PORT }}
 
           script: |
             cd projects/kusch
