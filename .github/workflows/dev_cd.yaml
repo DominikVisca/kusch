@@ -1,0 +1,30 @@
+name: Development Deployment
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: deploy code
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_TEST }}
+          key: ${{ secrets.SSH_KEY_TEST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: $${{ secrets.SSH_PORT }}
+
+          script: |
+            cd projects/kusch
+            git pull origin master
+            source enc/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic
+            sudo systemctl restart gunicorn
+            
